@@ -1,11 +1,9 @@
 package it.robol.android.piggybank;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
@@ -26,8 +24,9 @@ public class MovementDetailActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_movement_detail);
 
 		// Show the Up button in the action bar.		
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+		ActionBar bar = getSupportActionBar();
+		bar.setDisplayHomeAsUpEnabled(true);
+		
 		// savedInstanceState is non-null when there is fragment state
 		// saved from previous configurations of this activity
 		// (e.g. when rotating the screen from portrait to landscape).

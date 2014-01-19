@@ -2,7 +2,7 @@ package it.robol.android.piggybank;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 
 /**
@@ -32,8 +32,13 @@ public class MovementListActivity extends ActionBarActivity implements
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);	
 		setContentView(R.layout.activity_movement_list);
+
+		// Setup the ActionBar to navigate through 
+		ActionBar bar = getSupportActionBar();
+        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
 
 		if (findViewById(R.id.movement_detail_container) != null) {
 			// The detail container view will be present only in the
