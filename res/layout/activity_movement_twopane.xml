@@ -23,8 +23,8 @@
     -->
 
     <fragment
-        android:id="@+id/movement_list"
-        android:name="it.robol.android.piggybank.MovementListFragment"
+        android:id="@+id/list_browser"
+        android:name="it.robol.android.piggybank.ListBrowserFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

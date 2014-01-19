@@ -10,9 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class ListBrowserFragment extends Fragment {
+
+	/**
+	 * The serialization (saved instance state) Bundle key representing the
+	 * activated item position. Only used on tablets.
+	 */
+	private static final String STATE_SELECTED_POSITION = "selected_position";
 	
 	private ViewPager mViewPager;	
 	private TabsAdapter mTabsAdapter;
+	
+	private int selected_position = 0;
 	
 	public ListBrowserFragment() {
 	}
@@ -20,6 +28,11 @@ public class ListBrowserFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		if (savedInstanceState != null && 
+				savedInstanceState.containsKey(STATE_SELECTED_POSITION)) {
+			 selected_position = savedInstanceState.getInt(STATE_SELECTED_POSITION);
+		}
 	}
 	
 	@Override
@@ -39,7 +52,17 @@ public class ListBrowserFragment extends Fragment {
 		mTabsAdapter.addTab(bar.newTab().setText("Movements"), 
 				MovementListFragment.class, null);
 		
+		if (selected_position > 0) {
+			mViewPager.setCurrentItem(selected_position);
+		}
+		
 		return mainView;
+	}
+	
+	public void setActivateOnItemClick(boolean activated) {
+		for (int i = 0; i < mTabsAdapter.getCount(); i++) {
+			((MasterFragment) mTabsAdapter.getItem(i)).setActivateOnItemClick(activated);
+		}
 	}
 	
 }

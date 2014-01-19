@@ -2,6 +2,7 @@ package it.robol.android.piggybank;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 
@@ -21,14 +22,18 @@ import android.support.v7.app.ActionBarActivity;
  * {@link MovementListFragment.Callbacks} interface to listen for item
  * selections.
  */
-public class MovementListActivity extends ActionBarActivity implements
-		MovementListFragment.Callbacks {
+public class MainActivity extends ActionBarActivity implements
+		MasterCallbacks {
 
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
 	 * device.
 	 */
 	private boolean mTwoPane;
+	
+	public boolean hasTwoPaneModeEnabled() {
+		return mTwoPane;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +51,7 @@ public class MovementListActivity extends ActionBarActivity implements
 			// res/values-sw600dp). If this view is present, then the
 			// activity should be in two-pane mode.
 			mTwoPane = true;
-
-			// In two-pane mode, list items should be given the
-			// 'activated' state when touched.
-			((MovementListFragment) getSupportFragmentManager()
-					.findFragmentById(R.id.movement_list))
-					.setActivateOnItemClick(true);
 		}
-
-		// TODO: If exposing deep links into your app, handle intents here.
 	}
 
 	/**
@@ -63,21 +60,34 @@ public class MovementListActivity extends ActionBarActivity implements
 	 */
 	@Override
 	public void onItemSelected(String id) {
+		@SuppressWarnings("rawtypes")
+		Class detailClass = MovementDetailFragment.class;
+		
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
 			Bundle arguments = new Bundle();
 			arguments.putString(MovementDetailFragment.ARG_ITEM_ID, id);
-			MovementDetailFragment fragment = new MovementDetailFragment();
-			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.movement_detail_container, fragment).commit();
+			Fragment fragment;
+			
+			try {
+				fragment = (Fragment) detailClass.newInstance();				
+				fragment.setArguments(arguments);
+				getSupportFragmentManager().beginTransaction()
+						.replace(R.id.movement_detail_container, fragment).commit();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		} else {
 			// In single-pane mode, simply start the detail activity
 			// for the selected item ID.
-			Intent detailIntent = new Intent(this, MovementDetailActivity.class);
+			Intent detailIntent = new Intent(this, detailClass);
 			detailIntent.putExtra(MovementDetailFragment.ARG_ITEM_ID, id);
 			startActivity(detailIntent);
 		}
