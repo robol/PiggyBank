@@ -1,7 +1,5 @@
 package it.robol.android.piggybank.data;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 
 public class DataProvider {
@@ -11,13 +9,27 @@ public class DataProvider {
 	public DatabaseHelper mHelper;
 	
 	private AccountsManager mAccountsManager = null;
+	private CategoriesManager mCategoriesManager = null;
 	
 	protected DataProvider(Context context) {
-		// Inhibit creation of new instances
 		mHelper = new DatabaseHelper(context);
-		mAccountsManager = new AccountsManager(mHelper);
 		
-		// mAccountsManager.updateAccount(new Account(-1, "Test Account", "active"));
+		mAccountsManager = new AccountsManager(mHelper);
+		mCategoriesManager = new CategoriesManager(mHelper);
+		
+		if (mHelper.justCreated()) {
+			loadExampleData();
+		}
+	}
+	
+	private void loadExampleData() {
+		// Create a sample Account
+		mAccountsManager.updateAccount(
+				new Account("Main account"));
+		
+		// Sample Categories
+		mCategoriesManager.updateCategory(
+				new Category("Food"));
 	}
 	
 	public static DataProvider getInstance(Context context) {
@@ -28,16 +40,8 @@ public class DataProvider {
 		return mInstance;
 	}
 	
-	public ArrayList<Account> getAccounts() {
-		return mAccountsManager.getAccounts();
-	}
-	
-	public int getAccountsCount() {
-		return mAccountsManager.getCount();
-	}
-	
-	public boolean updateAccount(Account account) {
-		return mAccountsManager.updateAccount(account);
+	public AccountsManager getAccountsManager() {
+		return mAccountsManager;
 	}
 
 }

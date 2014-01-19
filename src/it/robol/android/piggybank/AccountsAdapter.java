@@ -29,12 +29,12 @@ public class AccountsAdapter implements ListAdapter {
 	}
 	
 	public void reloadData() {
-		mAccounts = mProvider.getAccounts();
+		mAccounts = mProvider.getAccountsManager().getAccounts();
 	}
 
 	@Override
 	public int getCount() {
-		return mProvider.getAccountsCount();
+		return mProvider.getAccountsManager().getCount();
 	}
 
 	@Override

@@ -51,7 +51,7 @@ public class AccountsManager {
 		return accounts;
 	}
 	
-	public boolean updateAccount(Account account) {
+	public Account updateAccount(Account account) {
 		SQLiteDatabase db = mHelper.getWritableDatabase();
 		db.beginTransaction();
 		
@@ -60,7 +60,7 @@ public class AccountsManager {
 		
 		try {
 			if (account.id == -1) {
-				db.insert(TABLE, null,
+				account.id = db.insert(TABLE, null,
 						account.asContentValues()
 						);
 			}
@@ -73,14 +73,16 @@ public class AccountsManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 			db.close();
-			return false;
+			
+			return null;
 		}
 		finally {
 			db.endTransaction();
 		}
 		
-		db.close();		
-		return true; 
+		db.close();
+		
+		return account; 
 	}
 
 }

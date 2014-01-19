@@ -6,7 +6,7 @@ public class Account {
 	
 	private DataProvider mProvider = null;
 	
-	public int id = -1;
+	public long id = -1;
 	public String name = "New Account";
 	public String state = "active";
 	
