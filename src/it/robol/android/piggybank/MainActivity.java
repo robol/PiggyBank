@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 /**
  * An activity representing a list of Movements. This activity has different
@@ -92,4 +95,23 @@ public class MainActivity extends ActionBarActivity implements
 			startActivity(detailIntent);
 		}
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.main_menu, menu);
+	    return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.create_account:
+                // TODO: We need to handle the case where the user is in tablet view.
+                startActivity(new Intent(this, NewAccountActivity.class));
+                return true;
+        }
+        return false;
+	}
+		
 }

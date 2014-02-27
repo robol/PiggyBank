@@ -13,9 +13,7 @@ public class NewAccountFragment extends Fragment {
 	public View onCreateView (LayoutInflater inflater, ViewGroup container, 
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		
-		View root = inflater.inflate(R.layout.fragment_new_account, null);
-		return root;
+		return inflater.inflate(R.layout.fragment_new_account, null);
 	}
 
 }

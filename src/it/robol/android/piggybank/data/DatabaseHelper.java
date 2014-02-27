@@ -73,6 +73,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			e.printStackTrace();
 		} finally {
 			db.endTransaction();
+			mJustCreated = true;
 		}
 	}
 

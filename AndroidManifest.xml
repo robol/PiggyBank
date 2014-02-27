@@ -24,13 +24,14 @@
         </activity>
         
         <activity
-            android:name="it.robol.android.piggybank.MovementDetailActivity"
-            android:label="@string/title_movement_detail"
-            android:parentActivityName=".MovementListActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MovementListActivity" />
+            android:name="it.robol.android.piggybank.NewAccountActivity"
+            android:label="Create new account">
         </activity>
+
+
+
+
+
     </application>
 
 </manifest>
