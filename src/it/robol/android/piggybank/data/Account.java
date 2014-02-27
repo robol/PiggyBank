@@ -13,13 +13,13 @@ public class Account {
 	public Account() {
 	}
 	
-	public Account(int id, String name, String state) {
-		this.id = id;
+	public Account(long id2, String name, String state) {
+		this.id = id2;
 		this.name = name;
 		this.state = state;
 	}
 	
-	public Account(int id, String name) {
+	public Account(long id, String name) {
 		this(id, name, "active");
 	}
 	

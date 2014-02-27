@@ -16,6 +16,9 @@ public class ListBrowserFragment extends Fragment {
 	 * activated item position. Only used on tablets.
 	 */
 	private static final String STATE_SELECTED_POSITION = "selected_position";
+		
+	private final static int ACCOUNTS_POSITION = 0;
+	private final static int MOVEMENTS_POSITION = 1;
 	
 	private ViewPager mViewPager;	
 	private TabsAdapter mTabsAdapter;

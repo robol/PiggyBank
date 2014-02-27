@@ -50,6 +50,23 @@ public class CategoriesManager {
 		return categories;
 	}
 	
+	public Category getCategory (long id) {
+		SQLiteDatabase db = mHelper.getReadableDatabase();
+		
+		Cursor cursor = db.rawQuery(
+				"SELECT name, color FROM " + TABLE + " WHERE id=" + id, null);
+		if (cursor.moveToFirst()) {
+			Category newCategory = new Category (
+					id, cursor.getString(0), cursor.getString(1));
+			db.close();
+			return newCategory;
+		}
+		else {
+			db.close();
+			return null;
+		}
+	}
+	
 	public Category updateCategory(Category category) {
 		SQLiteDatabase db = mHelper.getWritableDatabase();
 		
@@ -58,13 +75,17 @@ public class CategoriesManager {
 		try {
 			
 			if (category.id == -1) {
-				ContentValues values = new ContentValues(); 
+				ContentValues values = new ContentValues();
+				values.put("timestamp", Utils.getTimeStamp());
+				values.put("color", category.color);
 				values.put("name", category.name);
 				category.id = db.insert(TABLE, null, values);
 			}
 			else {
 				ContentValues values = new ContentValues();
-				values.put("name", category.name);			
+				values.put("name", category.name);
+				values.put("color", category.color);
+				values.put("timestamp", Utils.getTimeStamp());			
 				db.update(TABLE, values, "id = " + category.id, null);
 			}
 			

@@ -2,6 +2,7 @@ package it.robol.android.piggybank.data;
 
 import java.util.ArrayList;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -51,21 +52,47 @@ public class AccountsManager {
 		return accounts;
 	}
 	
+	public Account getAccount(long id) {
+		SQLiteDatabase db = mHelper.getReadableDatabase();
+		
+		Cursor cursor = db.rawQuery(
+				"SELECT name,  state FROM " + TABLE + " WHERE id=" + id, null);
+		
+		if (cursor.moveToFirst()) {
+			Account newAccount = new Account (
+					id, 
+					cursor.getString(0),
+					cursor.getString(1)
+					);
+			db.close();
+			return newAccount;
+		}
+		else {
+			db.close();
+			return null;
+		}
+	}
+	
 	public Account updateAccount(Account account) {
 		SQLiteDatabase db = mHelper.getWritableDatabase();
 		db.beginTransaction();
 		
 		Log.d("Database", "Adding Account = " + account.name);
-		Log.d("Database", "Database path = " + db.getPath());
 		
 		try {
+			ContentValues values = account.asContentValues();
+			
+			// Overwrite the timestamp in the fields so we can easily sync
+			// only changed objects (once Synchronization will be implemented)
+			values.put("timestamp", Utils.getTimeStamp());
+			
 			if (account.id == -1) {
 				account.id = db.insert(TABLE, null,
-						account.asContentValues()
+						values
 						);
 			}
 			else {
-				db.update(TABLE, account.asContentValues(), 
+				db.update(TABLE, values, 
 						"id = " + account.id, null);
 			}
 			

@@ -36,13 +36,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			db.execSQL("CREATE TABLE " + AccountsManager.TABLE + " (" +
 					"     id INTEGER PRIMARY KEY, " +
 					"     name VARCHAR(80)," +
-					"     state VARCHAR(15)" +
+					"     state VARCHAR(15)," +
+					"     timestamp INTEGER" +
 					");");
 			
 			db.execSQL("CREATE TABLE " + CategoriesManager.TABLE + "( " +
 					"     id INTEGER PRIMARY KEY," + 
 					"     name VARCHAR(80)," +
-					"     color VARCHAR(8)" +
+					"     color VARCHAR(8)," +
+					"     timestamp INTEGER" +
 					");");
 			
 			db.execSQL("CREATE TABLE movements (" +

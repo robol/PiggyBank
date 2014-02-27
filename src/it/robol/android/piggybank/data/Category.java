@@ -20,7 +20,7 @@ public class Category {
 		this(-1, name, color);
 	}
 	
-	public Category(int id, String name, String color) {
+	public Category(long id, String name, String color) {
 		this.id = id;
 		this.name = name;
 		this.color = color;

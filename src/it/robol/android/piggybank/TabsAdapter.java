@@ -61,6 +61,18 @@ public class TabsAdapter extends FragmentPagerAdapter
        mActionBar.addTab(tab);
        notifyDataSetChanged();
    }
+   
+   public void setTab(ActionBar.Tab tab, Class<?> clss, int position, Bundle args) {
+	   TabInfo oldTabInfo = mTabs.get(position);
+	   ActionBar.Tab oldTab = mActionBar.getTabAt(position);	   
+	   TabInfo info = new TabInfo(clss, args);
+	   tab.setTag(info);
+	   tab.setTabListener(this);
+	   mTabs.set(position, info);
+	   mActionBar.removeTab(oldTab);
+	   mActionBar.addTab(tab);
+	   notifyDataSetChanged();
+   }
 
    @Override
    public int getCount() {
