@@ -14,15 +14,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * on the Play Store. 
 	 */
 	public final static int VERSION = 1;
-	
-	/**
-	 * @brief true if the Database has just been created, i.e., 
-	 * if this class was force to (re)build the tables structure.  
-	 */
-	private boolean mJustCreated = false;
 
-	public DatabaseHelper(Context context) {
+    private SQLiteDatabase mDb;
+
+    public interface ExampleDataLoader {
+        /**
+         * @brief Implement this function to provide a function that will load
+         * some example data after the {@link DatabaseHelper} initialization.
+         */
+        public void loadExampleData(SQLiteDatabase db);
+    }
+
+    private ExampleDataLoader mLoader = null;
+
+	public DatabaseHelper(Context context, ExampleDataLoader loader) {
 		super(context, "piggybank", null, VERSION);
+        mLoader = loader;
 	}
 
 	@Override
@@ -62,17 +69,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 					");");
 			
 			Log.d("Database", "PiggyBank database has been created");
-			
-			// Mark the database as just created, so the DataProvider will
-			// inflate the example content as soon as it's loaded. 
-			mJustCreated = true;
-			
-			db.setTransactionSuccessful();
+
+            db.setTransactionSuccessful();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			db.endTransaction();
+
+            // If a ExampleDataLoader has been provided then call it to provide
+            // some initial entries in the database.
+            if (mLoader != null) {
+                mLoader.loadExampleData(db);
+            }
 		}
 	}
 
@@ -81,11 +90,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		// Nothing to do yet, since we have only version 1 for
 		// the database. 
 	}
-	
-	public boolean justCreated() {
-		return mJustCreated;
-	}
-	
-	
 
 }
