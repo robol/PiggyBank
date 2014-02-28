@@ -36,7 +36,7 @@ public class AccountListFragment extends MasterFragment {
         Activity activity = getActivity();
         if (activity instanceof MasterCallbacks) {
             MasterCallbacks cb = (MasterCallbacks) activity;
-            cb.onItemSelected(this, String.valueOf(id));
+            cb.onItemSelected(this, id);
         }
 	}
 	

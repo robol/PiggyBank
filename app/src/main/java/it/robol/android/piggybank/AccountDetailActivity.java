@@ -13,12 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 
+import it.robol.android.piggybank.data.DataProvider;
+
 public class AccountDetailActivity extends ActionBarActivity {
+
+    private long mAccountId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_detail);
+
+        mAccountId = getIntent().getExtras().getLong("ID");
 
         if (savedInstanceState == null) {
             // Pass the extras of the bundle.
@@ -30,6 +36,9 @@ public class AccountDetailActivity extends ActionBarActivity {
                     .commit();
         }
         else {
+            // TODO: This is probably wrong, because we haven't registered
+            // the AccountDetailFragment with this TAG and it should probably
+            // be recreated.
             getSupportFragmentManager().getFragment(savedInstanceState,
                     AccountDetailFragment.TAG).setArguments(
                     getIntent().getExtras());
@@ -48,9 +57,6 @@ public class AccountDetailActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
@@ -64,20 +70,13 @@ public class AccountDetailActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
+    public void onDeleteAccountClicked (View view) {
+        DataProvider provider = DataProvider.getInstance(this);
+        provider.getAccountsManager().removeAccount(mAccountId);
 
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_account_detail, container, false);
-            return rootView;
-        }
+        // Direct the user to the AccountList.
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
 }

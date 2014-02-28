@@ -15,12 +15,14 @@ public class DataProvider implements DatabaseHelper.ExampleDataLoader {
 	
 	private AccountsManager mAccountsManager = null;
 	private CategoriesManager mCategoriesManager = null;
+    private MovementManager mMovementManager = null;
 	
 	protected DataProvider(Context context) {
 		mHelper = new DatabaseHelper(context, this);
 		
 		mAccountsManager = new AccountsManager(mHelper);
 		mCategoriesManager = new CategoriesManager(mHelper);
+        mMovementManager = new MovementManager(mHelper);
 	}
 	
 	public void loadExampleData(SQLiteDatabase db) {
@@ -46,5 +48,7 @@ public class DataProvider implements DatabaseHelper.ExampleDataLoader {
 	public AccountsManager getAccountsManager() {
 		return mAccountsManager;
 	}
+    public CategoriesManager getCategoriesManager() { return mCategoriesManager; }
+    public MovementManager getMovementManager() { return mMovementManager; }
 
 }

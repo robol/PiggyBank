@@ -2,6 +2,7 @@ package it.robol.android.piggybank;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ public class AccountDetailFragment extends Fragment {
         // Load the Account, if possible.
         if (getArguments() != null) {
             long id;
-            id = Long.parseLong(getArguments().getString("ID"));
+            id = getArguments().getLong("ID");
             mAccount = DataProvider.getInstance(getActivity()).
                     getAccountsManager().getAccount(id);
 

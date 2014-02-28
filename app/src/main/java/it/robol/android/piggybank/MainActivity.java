@@ -9,6 +9,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+
+import it.robol.android.piggybank.data.DataProvider;
 
 /**
  * An activity representing a list of Movements. This activity has different
@@ -33,6 +36,13 @@ public class MainActivity extends ActionBarActivity implements
 	 * device.
 	 */
 	private boolean mTwoPane;
+
+    /**
+     * The ID currently displayed in the detail view when the two-pane mode is active.
+     */
+    private long mCurrentId = -1;
+
+    private PlaceholderFragment mPlaceholderFragment;
 	
 	public boolean hasTwoPaneModeEnabled() {
 		return mTwoPane;
@@ -40,15 +50,21 @@ public class MainActivity extends ActionBarActivity implements
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);	
-		setContentView(R.layout.activity_movement_list);
+		super.onCreate(savedInstanceState);
 
-		// Setup the ActionBar to navigate through 
+        mPlaceholderFragment = new PlaceholderFragment();
+
+        setContentView(R.layout.activity_main_list);
+
+        // You may uncomment this to force two-pane mode on a phone, for debugging purpose.
+        // setContentView(R.layout.activity_main_twopane);
+
+		// Setup the ActionBar to navigate through
 		ActionBar bar = getSupportActionBar();
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
 
-		if (findViewById(R.id.movement_detail_container) != null) {
+		if (findViewById(R.id.detail_container) != null) {
 			// The detail container view will be present only in the
 			// large-screen layouts (res/values-large and
 			// res/values-sw600dp). If this view is present, then the
@@ -71,18 +87,28 @@ public class MainActivity extends ActionBarActivity implements
 	 * that the item with the given ID was selected.
 	 */
 	@Override
-	public void onItemSelected(MasterFragment source, String id) {
-        Log.d(LOG_TAG, "Selected id = " + id);
+	public void onItemSelected(MasterFragment source, long id) {
+
+        Bundle extras = new Bundle();
+        extras.putLong("ID", id);
+
+        mCurrentId = id;
 
         if (mTwoPane) {
-            // Still to implement this
+            try {
+                Fragment detailFragment = (Fragment) source.getDetailFragmentClass().newInstance();
+                detailFragment.setArguments(extras);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.detail_container,
+                        detailFragment).commit();
+            } catch (Exception e) {
+                Log.d(LOG_TAG, "Failed to load the DetailFragment for " + source.toString());
+            }
         }
         else {
-            Bundle extras = new Bundle();
-            extras.putString("ID", id);
-            Intent newIntent = new Intent(this, source.getDetailActivityClass());
-            newIntent.putExtras(extras);
-            startActivity(newIntent);
+            Intent intent = new Intent(this, source.getDetailActivityClass());
+            intent.putExtras(extras);
+            startActivity(intent);
         }
 	}
 	
@@ -103,5 +129,23 @@ public class MainActivity extends ActionBarActivity implements
         }
         return false;
 	}
+
+    /**
+     * Load the {@link PlaceholderFragment} when we are in the two-pane view and there is nothing
+     * to do. In the classic smartphone view, this is a no-op.
+     */
+    public void loadPlaceholderFragment () {
+        if (mTwoPane) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.detail_container,
+                    mPlaceholderFragment).commit();
+
+            mCurrentId = -1;
+        }
+    }
+
+    public void onDeleteAccountClicked (View view) {
+        DataProvider.getInstance(this).getAccountsManager().removeAccount(mCurrentId);
+        loadPlaceholderFragment();
+    }
 		
 }

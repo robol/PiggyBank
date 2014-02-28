@@ -6,7 +6,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-public class CategoriesManager {
+public class CategoriesManager extends Manager {
 
 	public static final String TABLE = "categories";
 	
@@ -98,6 +98,7 @@ public class CategoriesManager {
 		}
 		
 		db.close();
+        notifyDataChanged();
 		return category;
 	}
 	

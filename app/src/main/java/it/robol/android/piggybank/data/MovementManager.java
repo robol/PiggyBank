@@ -6,7 +6,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-public class MovementManager {
+public class MovementManager extends Manager {
 	
 	private DatabaseHelper mHelper;
 	
@@ -118,7 +118,8 @@ public class MovementManager {
 		}
 		
 		db.close();
-		
+
+        notifyDataChanged();
 		return movement; 
 	}
 	

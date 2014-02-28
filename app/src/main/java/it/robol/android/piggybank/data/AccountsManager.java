@@ -7,11 +7,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-public class AccountsManager {
+public class AccountsManager extends Manager {
 	
 	private DatabaseHelper mHelper = null;
 	
 	public static final String TABLE = "accounts";
+
+    private final static String LOG_TAG = "AccountsManager";
+
+    private ManagerListener[] mListeners = {};
 	
 	public AccountsManager(DatabaseHelper helper) {
 		mHelper = helper;
@@ -108,8 +112,34 @@ public class AccountsManager {
 		}
 		
 		db.close();
-		
+
+        notifyDataChanged();
 		return account; 
 	}
+
+    /**
+     * Remove an {@link Account} from the database, along with all its associated
+     * transitions.
+     *
+     * @param id The id of the {@link Account} that shall be removed.
+     */
+    public void removeAccount(long id) {
+        Log.d(LOG_TAG, "Deleting account with id = " + id);
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            db.execSQL("DELETE FROM " + MovementManager.TABLE + " WHERE account_id = " + id);
+            db.execSQL("DELETE FROM " + AccountsManager.TABLE + " WHERE id = " + id);
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.w(LOG_TAG, "Error while deleting Account with id = " + id);
+            e.printStackTrace();
+        } finally {
+            db.endTransaction();
+        }
+
+        notifyDataChanged();
+        db.close();
+    }
 
 }

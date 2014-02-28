@@ -4,30 +4,44 @@ import java.util.ArrayList;
 
 import it.robol.android.piggybank.data.Account;
 import it.robol.android.piggybank.data.DataProvider;
+import it.robol.android.piggybank.data.ManagerListener;
+
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import java.util.HashSet;
 
-public class AccountsAdapter implements ListAdapter {
+public class AccountsAdapter implements ListAdapter, ManagerListener {
 	
 	private DataProvider mProvider = null;
 	private ArrayList<Account> mAccounts = new ArrayList<Account>();
 	private Context mContext = null;
+
+    private final static String LOG_TAG = "AccountsAdapter";
+
+    private HashSet<DataSetObserver> mObservers = new HashSet<DataSetObserver>();
 	
 	public AccountsAdapter(Context context) {
 		mContext = context;
 		mProvider = DataProvider.getInstance(context);
-		
-		// TODO: Once the Observer interface is built into the DataProvider
-		// we should really hook up there. 
+
+        mProvider.getAccountsManager().registerListener(this);
 		
 		reloadData();
 	}
+
+    public void onManagerChanged() {
+        reloadData();
+        for (DataSetObserver o : mObservers) {
+            o.onChanged();
+        }
+    }
 	
 	public void reloadData() {
 		mAccounts = mProvider.getAccountsManager().getAccounts();
@@ -88,10 +102,12 @@ public class AccountsAdapter implements ListAdapter {
 
 	@Override
 	public void registerDataSetObserver(DataSetObserver observer) {
+        mObservers.add(observer);
 	}
 
 	@Override
 	public void unregisterDataSetObserver(DataSetObserver observer) {
+        mObservers.remove(observer);
 	}
 
 	@Override
