@@ -25,7 +25,6 @@ public class MovementListFragment extends MasterFragment {
 	public MovementListFragment() {
 	}
 
-	@SuppressLint("InlinedApi")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,9 +36,8 @@ public class MovementListFragment extends MasterFragment {
 		super.onListItemClick(listView, view, position, id);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Class getDetailFragmentClass() {
+	public Class<?> getDetailFragmentClass() {
 		return MovementDetailFragment.class;
 	}
 }

@@ -22,8 +22,7 @@ public abstract class MasterFragment extends ListFragment {
 	/**
 	 * @return the class of the relative Detail Fragment.
 	 */
-	@SuppressWarnings("rawtypes")
-	public abstract Class getDetailFragmentClass();
+	public abstract Class<?> getDetailFragmentClass();
 
 	/**
 	 * The fragment's current callback object, which is notified of list item
