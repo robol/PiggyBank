@@ -77,12 +77,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		} finally {
 			db.endTransaction();
 
-            // If a ExampleDataLoader has been provided then call it to provide
-            // some initial entries in the database.
-            if (mLoader != null) {
-                mLoader.loadExampleData(db);
-            }
-		}
+            		// If a ExampleDataLoader has been provided then call it to provide
+            		// some initial entries in the database.
+            		if (mLoader != null) {
+               			mLoader.loadExampleData(db);
+			}
+            	}
 	}
 
 	@Override
