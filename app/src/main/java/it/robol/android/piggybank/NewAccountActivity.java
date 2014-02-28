@@ -1,10 +1,17 @@
 package it.robol.android.piggybank;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+
+import it.robol.android.piggybank.data.Account;
+import it.robol.android.piggybank.data.DataProvider;
 
 public class NewAccountActivity extends ActionBarActivity {
 
@@ -28,5 +35,31 @@ public class NewAccountActivity extends ActionBarActivity {
 				new NewAccountFragment(), NewAccountFragment.TAG).commit();
         }
 	}
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpTo(this,
+                        new Intent(this, MainActivity.class));
+                return true;
+        }
+
+        return false;
+    }
+
+    public void onCreateNewAccountClicked (View view) {
+        Log.d(LOG_TAG, "Creating new Account: ");
+
+        DataProvider provider = DataProvider.getInstance(this);
+        EditText accountNameText = (EditText) findViewById(R.id.newAccountNameEditText);
+        Account newAccount = new Account(accountNameText.getText().toString());
+
+        provider.getAccountsManager().updateAccount(newAccount);
+
+        // Go back to the Accounts View.
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 
 }

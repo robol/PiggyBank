@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class AccountsAdapter implements ListAdapter {
@@ -63,7 +64,9 @@ public class AccountsAdapter implements ListAdapter {
 		}
 		
 		TextView textView = (TextView) convertView.findViewById(R.id.textView);
-		textView.setText(account.name); 
+		textView.setText(account.name);
+
+        // final ListView listView = (ListView) parent;
 		
 		return convertView;
 	}
@@ -85,26 +88,20 @@ public class AccountsAdapter implements ListAdapter {
 
 	@Override
 	public void registerDataSetObserver(DataSetObserver observer) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void unregisterDataSetObserver(DataSetObserver observer) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public boolean areAllItemsEnabled() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isEnabled(int position) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }

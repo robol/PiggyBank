@@ -24,6 +24,11 @@ public abstract class MasterFragment extends ListFragment {
 	 */
 	public abstract Class<?> getDetailFragmentClass();
 
+    /**
+     * @return the class of the related {@link Activity} class.
+     */
+    public abstract Class<?> getDetailActivityClass();
+
 	/**
 	 * The fragment's current callback object, which is notified of list item
 	 * clicks.

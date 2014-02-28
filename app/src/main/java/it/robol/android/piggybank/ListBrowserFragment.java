@@ -16,10 +16,12 @@ public class ListBrowserFragment extends Fragment {
 	 * The serialization (saved instance state) Bundle key representing the
 	 * activated item position. Only used on tablets.
 	 */
-	private static final String STATE_SELECTED_POSITION = "selected_position";
+	public static final String STATE_SELECTED_POSITION = "selected_position";
+
+    public static final String TAG = "ListBrowserFragment";
 		
-	private final static int ACCOUNTS_POSITION = 0;
-	private final static int MOVEMENTS_POSITION = 1;
+	public final static int ACCOUNTS_POSITION = 0;
+	public final static int MOVEMENTS_POSITION = 1;
 	
 	private ViewPager mViewPager;	
 	private TabsAdapter mTabsAdapter;
@@ -62,6 +64,10 @@ public class ListBrowserFragment extends Fragment {
 		
 		return mainView;
 	}
+
+    public void setCurrentPosition (int position) {
+        mViewPager.setCurrentItem (position);
+    }
 	
 	public void setActivateOnItemClick(boolean activated) {
 		for (int i = 0; i < mTabsAdapter.getCount(); i++) {

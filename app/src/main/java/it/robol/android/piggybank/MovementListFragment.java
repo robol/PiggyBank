@@ -40,4 +40,9 @@ public class MovementListFragment extends MasterFragment {
 	public Class<?> getDetailFragmentClass() {
 		return MovementDetailFragment.class;
 	}
+
+    @Override
+    public Class<?> getDetailActivityClass() {
+        return MovementDetailActivity.class;
+    }
 }

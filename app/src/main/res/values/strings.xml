@@ -3,10 +3,15 @@
 
     <string name="app_name">PiggyBank</string>
     <string name="title_movement_detail">Movement Detail</string>
-    
+
     <!-- New Account -->
     <string name="new_account_title">Create a new Account</string>
     <string name="new_account_name">Account name: </string>
     <string name="new_account_create">Create</string>
+    <string name="new_account_name_label">Name</string>
+    <string name="new_account_description">Insert a name for the new Account that you wish to create:</string>
+    <string name="title_activity_account_detail">AccountDetailActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
